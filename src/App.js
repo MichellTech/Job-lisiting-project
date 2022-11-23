@@ -166,7 +166,7 @@ function App() {
               } = item
               return (
                 <div className='px-6 py-10 mt-2 mx-auto max-w-sm md:max-w-lg md:py-2  lg:max-w-full'>
-                  <div className='bg-white shadow-cyan-500 rounded-md mx-0 px-4 py-6 space-y-4 relative lg:flex lg:justify-between gap-1 lg:mx-20 lg:py-4 lg:space-y-0'>
+                  <div className='bg-white shadow-md rounded-md mx-0 px-4 py-6 space-y-4 relative lg:flex lg:justify-between gap-1 lg:mx-20 lg:py-4 lg:space-y-0'>
                     {/* border */}
                     {featured ? (
                       <div className='border-l-4 border-DesaturatedDarkCyan absolute left-0 top-0 z-50 bottom-0'></div>
