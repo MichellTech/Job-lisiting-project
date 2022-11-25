@@ -26,12 +26,14 @@ function App() {
           item.role.includes(filterrole) &&
           item.level.includes(filterlevel) &&
           item.languages.find((item) => item.includes(filterlanguages)) &&
-          item.tools.map((item) => item.includes(filtertools))
+          item.tools.find((item) =>
+            item === '' ? [...item] : item.includes(filtertools)
+          )
       )
       setGeneralopp(newData)
     } else setGeneralopp(data)
   }
-
+  console.log(generalopp)
   // use effect to handle the filteration when they change
   useEffect(() => {
     if (filterrole) {
