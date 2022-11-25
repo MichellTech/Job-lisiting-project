@@ -6,21 +6,121 @@ import { useEffect, useState } from 'react'
 
 function App() {
   const [generalopp, setGeneralopp] = useState(data)
-
-  const [general, setGeneral] = useState([])
-  const [reset, setReset] = useState(false)
-  const [filter1, setFilter1] = useState('')
-  const [closer, setCloser] = useState(0)
-  const [filter2, setFilter2] = useState('')
-
-  const [filter3, setFilter3] = useState('')
-  const [filter4, setFilter4] = useState('')
-  const [filter5, setFilter5] = useState('')
-  const [filter6, setFilter6] = useState('')
-  const [filter7, setFilter7] = useState('')
+  const [general, setGeneral] = useState(data)
+  const [resetrole, setResetrole] = useState(0)
+  const [resetpoints, setResetpoints] = useState(0)
+  const [resetlevel, setResetlevel] = useState(0)
+  const [resetlanguages, setResetlanguages] = useState(0)
+  const [resettools, setResettools] = useState(0)
+  const [filterrole, setFilterrole] = useState('')
+  const [filterlevel, setFilterlevel] = useState('')
+  const [filterlanguages, setFilterlanguages] = useState('')
+  const [filtertools, setFiltertools] = useState('')
   const [modal, setModal] = useState(false)
 
-  // data
+  // filteration
+  const filterData = () => {
+    if (filterrole || filterlanguages || filterlevel || filtertools) {
+      let newData = general.filter(
+        (item) =>
+          item.role.includes(filterrole) &&
+          item.level.includes(filterlevel) &&
+          item.languages.find((item) => item.includes(filterlanguages)) &&
+          item.tools.map((item) => item.includes(filtertools))
+      )
+      setGeneralopp(newData)
+    } else setGeneralopp(data)
+  }
+
+  // use effect to handle the filteration when they change
+  useEffect(() => {
+    if (filterrole) {
+      filterData()
+    } else if (!filterrole) {
+      filterData()
+    }
+    if (filterlevel) {
+      filterData()
+    } else if (!filterlevel) {
+      filterData()
+    }
+    if (filterlanguages) {
+      filterData()
+    } else if (!filterlanguages) {
+      filterData()
+    }
+    if (filtertools) {
+      filterData()
+    } else if (!filtertools) {
+      filterData()
+    }
+
+    totalresetpoints()
+  }, [filterrole, filterlevel, filterlanguages, filtertools])
+
+  // useeffect to handle points used to track the number of values in the tray filter tray
+  useEffect(() => {
+    if (resetpoints < 1) {
+      setModal(false)
+    }
+  }, [resetpoints])
+
+  // functions to instigate the filteration process
+  const handlerole = (role) => {
+    setFilterrole(role)
+    setModal(true)
+    setResetrole(1)
+  }
+
+  const handlelevel = (level) => {
+    setFilterlevel(level)
+    setModal(true)
+    setResetlevel(1)
+  }
+
+  const handlelanguages = (item) => {
+    setFilterlanguages(item)
+    setModal(true)
+    setResetlanguages(1)
+  }
+
+  const handletools = (item) => {
+    setFiltertools(item)
+    setModal(true)
+    setResettools(1)
+  }
+
+  // function to clear all the inputs
+  const handleclear = () => {
+    setFilterrole('')
+    setFilterlevel('')
+    setFilterlanguages('')
+    setFiltertools('')
+    setModal(false)
+  }
+
+  // function to handle all cancel requests
+  const cancelrole = () => {
+    setFilterrole('')
+    setResetrole(0)
+  }
+  const cancellevel = () => {
+    setFilterlevel('')
+    setResetlevel(0)
+  }
+  const cancellanguages = () => {
+    setFilterlanguages('')
+    setResetlanguages(0)
+  }
+  const canceltools = () => {
+    setFiltertools('')
+    setResettools(0)
+  }
+
+  const totalresetpoints = () => {
+    let total = resetrole + resetlevel + resetlanguages + resettools
+    setResetpoints(total)
+  }
 
   return (
     <>
@@ -37,97 +137,56 @@ function App() {
               <div className='bg-white shadow-cyan-500 rounded-md mx-0 px-4 py-6 space-y-0 lg:mx-20 flex justify-between items-center gap-2'>
                 <div className='grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-6 '>
                   {/* role */}
-                  {filter1 ? (
-                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center '>
-                      <h1>{filter1}</h1>
+                  {filterrole ? (
+                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center text-center '>
+                      <h1>{filterrole}</h1>
                       <img
                         src={remove}
                         alt=''
                         className='bg-DesaturatedDarkCyan px-1 py-1 h-full'
-                        // onClick={() => handlecancel()}
+                        onClick={() => cancelrole()}
                       />
                     </div>
                   ) : (
                     ''
                   )}
                   {/* level */}
-                  {filter2 ? (
-                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center '>
-                      <h1>{filter2}</h1>
+                  {filterlevel ? (
+                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center text-center '>
+                      <h1>{filterlevel}</h1>
                       <img
                         src={remove}
                         alt=''
                         className='bg-DesaturatedDarkCyan px-1 py-1 h-full'
-                        // onClick={() => handlecancel2()}
+                        onClick={() => cancellevel()}
                       />
                     </div>
                   ) : (
                     ''
                   )}
                   {/* lan 1 */}
-                  {filter3 ? (
-                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center '>
-                      <h1>{filter3}</h1>
+                  {filterlanguages ? (
+                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center text-center '>
+                      <h1>{filterlanguages}</h1>
                       <img
                         src={remove}
                         alt=''
                         className='bg-DesaturatedDarkCyan px-1 py-1 h-full'
-                        // onClick={() => handlecancel3()}
+                        onClick={() => cancellanguages()}
                       />
                     </div>
                   ) : (
                     ''
                   )}
                   {/* lan 2 */}
-                  {filter4 ? (
-                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center '>
-                      <h1>{filter4}</h1>
+                  {filtertools ? (
+                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center text-center '>
+                      <h1>{filtertools}</h1>
                       <img
                         src={remove}
                         alt=''
                         className='bg-DesaturatedDarkCyan px-1 py-1 h-full'
-                        // onClick={() => handlecancel4()}
-                      />
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                  {/* lanlauge 3 */}
-                  {filter5 ? (
-                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center '>
-                      <h1>{filter5}</h1>
-                      <img
-                        src={remove}
-                        alt=''
-                        // onClick={() => handlecancel5()}
-                      />
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                  {/* tools1 */}
-                  {filter6 ? (
-                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center '>
-                      <h1>{filter6}</h1>
-                      <img
-                        src={remove}
-                        alt=''
-                        className='bg-DesaturatedDarkCyan px-1 py-1 h-full'
-                        // onClick={() => handlecancel6()}
-                      />
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                  {/* tools2 */}
-                  {filter7 ? (
-                    <div className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan pl-2   cursor-pointer flex justify-end gap-2 items-center '>
-                      <h1>{filter7}</h1>
-                      <img
-                        src={remove}
-                        alt=''
-                        className='bg-DesaturatedDarkCyan px-1 py-1 h-full'
-                        // onClick={() => handlecancel7()}
+                        onClick={() => canceltools()}
                       />
                     </div>
                   ) : (
@@ -136,7 +195,7 @@ function App() {
                 </div>
                 <div
                   className='font-sans font-bold cursor-pointer'
-                  // onClick={() => handleclear()}
+                  onClick={() => handleclear()}
                 >
                   <h1 className=''>Clear</h1>
                 </div>
@@ -161,12 +220,12 @@ function App() {
                 featured,
                 role,
                 level,
-                id,
+
                 tools,
               } = item
               return (
                 <div className='px-6 py-10 mt-2 mx-auto max-w-sm md:max-w-lg md:py-2  lg:max-w-full'>
-                  <div className='bg-white shadow-md rounded-md mx-0 px-4 py-6 space-y-4 relative lg:flex lg:justify-between gap-1 lg:mx-20 lg:py-4 lg:space-y-0'>
+                  <div className='bg-white shadow-md rounded-md mx-0 px-4 py-6 space-y-4 relative lg:flex lg:justify-between gap-2 items-center lg:mx-20 lg:py-4 lg:space-y-0'>
                     {/* border */}
                     {featured ? (
                       <div className='border-l-4 border-DesaturatedDarkCyan absolute left-0 top-0 z-50 bottom-0'></div>
@@ -187,10 +246,10 @@ function App() {
                           </h1>
                           {featured ? (
                             <div className='flex items-center gap-4'>
-                              <h1 className='bg-DesaturatedDarkCyan text-white px-3 py-1 rounded-full '>
+                              <h1 className='bg-DesaturatedDarkCyan text-white px-3 py-1 rounded-full text-xs '>
                                 NEW!
                               </h1>
-                              <h1 className='bg-LightGrayishblue text-white px-3 py-1 rounded-full '>
+                              <h1 className='bg-LightGrayishblue text-white px-3 py-1 rounded-full text-xs '>
                                 FEATURED
                               </h1>
                             </div>
@@ -200,88 +259,67 @@ function App() {
                         </div>
                         {/* position and timer */}
                         <div className='font-sans text-LightGrayishblue text-xl font-bold mt-4 md:mt-1'>
-                          <h1 className=''>{position}</h1>
+                          <h1 className='text-lg'>{position}</h1>
                         </div>
                         {/* time,role,ofice */}
                         <div className='font-sans flex items-baseline gap-4 text-VeryDarkGrayishCyan mt-2 md:mt-1'>
-                          <h1 className='text-xl'>{postedAt}</h1>
+                          <h1 className='text-sm'>{postedAt}</h1>
                           <h1 className='text-xl'>.</h1>
-                          <h1 className='text-xl'>{contract}</h1>
+                          <h1 className='text-sm'>{contract}</h1>
                           <h1 className='text-xl'>.</h1>
-                          <h1 className='text-xl'>{location}</h1>
+                          <h1 className='text-sm'>{location}</h1>
                         </div>
                       </div>
                     </div>
                     {/* divider */}
                     <div className=' border-b border-black  lg:hidden'></div>
                     {/* lower part */}
-                    <div
-                      className='font-sans space-x-4 space-y-4 md:space-x-2 lg:space-x-2
-                '
-                    >
+                    <div className='font-sans grid text-center grid-cols-3 gap-2 lg:grid-cols-4 lg:flex'>
                       {/* role */}
                       <h1
                         className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
-                        // onClick={() => handlerole(role)}
+                        onClick={() => handlerole(role)}
                       >
                         {role}
                       </h1>
                       {/* level */}
                       <h1
                         className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
-                        // onClick={() => handlelevel(level)}
+                        onClick={() => handlelevel(level)}
                       >
                         {level}
                       </h1>
                       {/* tools */}
-                      {tools[0] ? (
-                        <h1
-                          className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
-                          // onClick={() => handletool1(tools[0])}
-                        >
-                          {tools[0]}
-                        </h1>
-                      ) : (
-                        ''
-                      )}
-                      {tools[1] ? (
-                        <h1
-                          className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
-                          // onClick={() => handletool2(tools[1])}
-                        >
-                          {tools[1]}
-                        </h1>
-                      ) : (
-                        ''
-                      )}
+                      {tools
+                        ? [...tools].map((item, index) => {
+                            if (item === '') {
+                              return null
+                            } else
+                              return (
+                                <h1
+                                  className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
+                                  onClick={() => handletools(item)}
+                                >
+                                  {item}
+                                </h1>
+                              )
+                          })
+                        : 'hello'}
 
                       {/* lamguages */}
-                      <h1
-                        className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
-                        // onClick={() => handlelanguage1(languages[0])}
-                      >
-                        {languages[0]}
-                      </h1>
-                      {languages[1] ? (
-                        <h1
-                          className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
-                          // onClick={() => handlelanguage2(languages[1])}
-                        >
-                          {languages[1]}
-                        </h1>
-                      ) : (
-                        ''
-                      )}
-                      {languages[2] ? (
-                        <h1
-                          className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
-                          // onClick={() => handlelanguage3(languages[2])}
-                        >
-                          {languages[2]}
-                        </h1>
-                      ) : (
-                        ''
-                      )}
+                      {languages
+                        ? [...languages].map((item, index) => {
+                            return (
+                              <h1
+                                key={index}
+                                className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
+                                onClick={() => handlelanguages(item)}
+                              >
+                                {item}
+                              </h1>
+                            )
+                          })
+                        : ''}
                     </div>
                   </div>
                 </div>
