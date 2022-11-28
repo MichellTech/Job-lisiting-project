@@ -25,10 +25,8 @@ function App() {
         (item) =>
           item.role.includes(filterrole) &&
           item.level.includes(filterlevel) &&
-          item.languages.find((item) => item.includes(filterlanguages)) &&
-          item.tools.find((item) =>
-            item === '' ? [...item] : item.includes(filtertools)
-          )
+          item.languages.find((jobs) => jobs.includes(filterlanguages)) &&
+          item.tools.find((content) => content.includes(filtertools))
       )
       setGeneralopp(newData)
     } else setGeneralopp(data)
@@ -293,10 +291,11 @@ function App() {
                       </h1>
                       {/* tools */}
                       {tools
-                        ? [...tools].map((item, index) => {
-                            if (item === '') {
-                              return null
-                            } else
+                        ? [...tools]
+                            .filter((item) => {
+                              return item !== ''
+                            })
+                            .map((item, index) => {
                               return (
                                 <h1
                                   className='text-DesaturatedDarkCyan font-bold bg-LightGrayishCyan inline-block px-4 py-1 rounded-md cursor-pointer'
@@ -305,7 +304,7 @@ function App() {
                                   {item}
                                 </h1>
                               )
-                          })
+                            })
                         : 'hello'}
 
                       {/* lamguages */}

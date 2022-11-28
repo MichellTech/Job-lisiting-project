@@ -23,7 +23,7 @@ const lisitings = [
     contract: 'Full Time',
     location: 'USA Only',
     languages: ['HTML', 'CSS', 'JavaScript'],
-    tools: [''],
+    tools: ['React'],
   },
   {
     id: 2,
@@ -68,7 +68,7 @@ const lisitings = [
     contract: 'Contract',
     location: 'USA Only',
     languages: ['CSS', 'JavaScript'],
-    tools: [''],
+    tools: ['Sass', 'Ruby'],
   },
   {
     id: 5,
